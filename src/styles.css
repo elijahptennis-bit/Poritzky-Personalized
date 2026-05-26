@@ -331,6 +331,12 @@ img {
   background: rgba(255, 253, 247, 0.55);
 }
 
+.home-about-section {
+  padding: clamp(48px, 7vw, 86px) 0;
+  border-top: 1px solid var(--line);
+  background: rgba(255, 253, 247, 0.42);
+}
+
 .clients-wrap {
   display: grid;
   gap: 26px;
@@ -943,8 +949,29 @@ img {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .nav-wrap {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-block: 12px;
+  }
+
+  .logo {
+    margin-right: auto;
+  }
+
   .site-nav {
-    display: none;
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 18px;
+    padding-top: 6px;
+  }
+
+  .site-nav a {
+    border: 1px solid rgba(45, 62, 80, 0.16);
+    border-radius: 999px;
+    padding: 9px 12px;
+    background: rgba(255, 253, 247, 0.72);
   }
 }
 
@@ -986,6 +1013,10 @@ img {
 
   .button {
     width: 100%;
+  }
+
+  .site-header .nav-wrap > .button {
+    width: auto;
   }
 
   .hero-visual,

@@ -167,7 +167,7 @@ const pricingTiers = [
 
 const navItems = [
   { label: "Services", path: "/services" },
-  { label: "Story", path: "/story" },
+  { label: "About Me", path: "/story" },
   { label: "Work", path: "/work" },
   { label: "Contact", path: "/contact" },
 ];
@@ -332,6 +332,33 @@ function HomePage({ navigate }) {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      <section className="home-about-section">
+        <div className="content-grid story-photo-grid">
+          <div className="story-photo-frame">
+            <img
+              src={storyCourtImage}
+              alt="Elijah working courtside on marketing strategy"
+            />
+          </div>
+          <div className="story-feature-copy">
+            <p className="section-label">About Me</p>
+            <h2>Built from sport, travel, communication, and real brand experience.</h2>
+            <p>
+              I bring an athlete's discipline and a marketer's eye for growing
+              trends into every project. My background helps me understand what
+              people pay attention to, how communities discover events, and how
+              brands can create content that feels current without feeling
+              random.
+            </p>
+            <div className="hero-actions">
+              <ButtonLink href="/story" navigate={navigate} variant="secondary">
+                Learn More <ChevronRight aria-hidden="true" />
+              </ButtonLink>
+            </div>
+          </div>
         </div>
       </section>
 
