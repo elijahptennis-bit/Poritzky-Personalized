@@ -23,8 +23,13 @@ import ppmHeroImage from "./assets/ppm-hero.png";
 import ppmLogo from "./assets/ppm-mark.png";
 import homeAboutImage from "./assets/about-home-court.png";
 import storyAboutImage from "./assets/about-story-tennis.jpg";
+import contactWorkspaceImage from "./assets/contact-workspace.png";
+import packagesPlanningImage from "./assets/packages-planning.png";
+import workEventCourtImage from "./assets/work-event-court.png";
 
 const email = "Elijahptennis@gmail.com";
+const phone = "5182600456";
+const phoneDisplay = "(518) 260-0456";
 
 const services = [
   {
@@ -169,6 +174,7 @@ const pricingTiers = [
 const navItems = [
   { label: "Services", path: "/services" },
   { label: "About Me", path: "/story" },
+  { label: "Packages", path: "/packages" },
   { label: "Work", path: "/work" },
   { label: "Contact", path: "/contact" },
 ];
@@ -177,6 +183,7 @@ const pages = new Set([
   "/",
   "/services",
   "/story",
+  "/packages",
   "/work",
   "/contact",
   "/retainer",
@@ -184,6 +191,7 @@ const pages = new Set([
 ]);
 
 function normalizePath(pathname) {
+  if (pathname === "/retainer") return "/packages";
   return pages.has(pathname) ? pathname : "/";
 }
 
@@ -389,10 +397,10 @@ function HomePage({ navigate }) {
             navigate={navigate}
           />
           <PagePreview
-            label="Retainer"
+            label="Packages"
             title="Ongoing monthly support."
             text="A steady marketing partner for brands that need consistency and momentum."
-            href="/retainer"
+            href="/packages"
             navigate={navigate}
           />
           <PagePreview
@@ -450,12 +458,28 @@ function ServicesPage({ navigate }) {
             <ButtonLink href="/start-project" navigate={navigate}>
               Start a Project <ArrowRight aria-hidden="true" />
             </ButtonLink>
-            <ButtonLink href="/retainer" navigate={navigate} variant="secondary">
-              View Monthly Retainer
+            <ButtonLink href="/packages" navigate={navigate} variant="secondary">
+              View Packages
             </ButtonLink>
           </>
         }
       />
+      <section className="visual-feature-section">
+        <div className="content-grid visual-feature-grid">
+          <div className="visual-feature-frame">
+            <img src={ppmHeroImage} alt="Marketing planning materials for social content and campaigns" />
+          </div>
+          <div className="visual-feature-copy">
+            <p className="section-label">How It Looks</p>
+            <h2>Strategy, content, and campaign planning that feels organized.</h2>
+            <p>
+              The goal is to turn scattered ideas into a clear plan: what to
+              post, what to promote, what to say, and how to make each piece
+              feel connected to the brand.
+            </p>
+          </div>
+        </div>
+      </section>
       <section className="section">
         <div className="content-grid service-detail-grid">
           {services.map((service) => {
@@ -607,6 +631,17 @@ function WorkPage({ navigate }) {
               customer experiences that people remember.
             </p>
           </div>
+          <div className="work-photo-frame">
+            <img src={workEventCourtImage} alt="Marketing materials and content tools at a sports venue" />
+          </div>
+        </div>
+      </section>
+      <section className="section compact-section">
+        <div className="content-grid work-grid">
+          <div className="section-heading">
+            <p className="section-label">Proof</p>
+            <h2>Real work across sports, events, and local brands.</h2>
+          </div>
           <div className="proof-list">
             {proof.map((item, index) => (
               <article key={item} className="proof-item">
@@ -621,27 +656,46 @@ function WorkPage({ navigate }) {
   );
 }
 
-function RetainerPage({ navigate }) {
+function PackagesPage({ navigate }) {
   const items = [
-    "Monthly strategy call and priorities",
-    "Content calendar direction",
-    "Campaign and event planning support",
-    "Messaging, caption, and offer refinement",
-    "Ongoing ideas for partnerships and community growth",
+    "Monthly content calendar with weekly posting priorities",
+    "Reel, story, and short-form video concepts built around current trends",
+    "Captions, hooks, hashtags, and social search language",
+    "Event promotion plans, launch timelines, and day-of content direction",
+    "Brand messaging, offer positioning, and visual direction",
+    "Partnership, sponsorship, and community collaboration ideas",
+    "Monthly performance review with practical next-step recommendations",
+    "Strategy calls and check-ins based on the package level",
   ];
 
   return (
     <>
       <PageHero
-        label="Monthly Retainer"
+        label="Packages"
         title="Consistent marketing support without building a full in-house team."
-        text="The retainer is for brands that want steady direction, cleaner execution, and a marketing partner who stays close to the business."
+        text="Packages are for brands that want steady direction, cleaner execution, and a marketing partner who stays close to the business."
         actions={
           <ButtonLink href="/contact" navigate={navigate}>
-            Ask About Retainer <ArrowRight aria-hidden="true" />
+            Ask About Packages <ArrowRight aria-hidden="true" />
           </ButtonLink>
         }
       />
+      <section className="visual-feature-section">
+        <div className="content-grid visual-feature-grid reverse">
+          <div className="visual-feature-frame">
+            <img src={packagesPlanningImage} alt="Organized monthly marketing package planning materials" />
+          </div>
+          <div className="visual-feature-copy">
+            <p className="section-label">Monthly Rhythm</p>
+            <h2>Pick the level of content and strategy support that matches your pace.</h2>
+            <p>
+              These packages are built around practical monthly output: clear
+              priorities, content ideas, campaign assets, and check-ins that
+              help the brand keep moving.
+            </p>
+          </div>
+        </div>
+      </section>
       <section className="section">
         <div className="content-grid retainer-grid">
           <article className="detail-card featured-card">
@@ -757,6 +811,42 @@ function StartProjectPage({ navigate }) {
 }
 
 function ContactPage({ navigate }) {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    brand: "",
+    support: "Monthly packages",
+    timeline: "",
+    budget: "",
+    message: "",
+  });
+
+  const updateForm = (event) => {
+    const { name, value } = event.target;
+    setFormData((current) => ({ ...current, [name]: value }));
+  };
+
+  const submitContactForm = (event) => {
+    event.preventDefault();
+    const body = [
+      `Name: ${formData.name}`,
+      `Email: ${formData.email}`,
+      `Phone: ${formData.phone}`,
+      `Brand / Business: ${formData.brand}`,
+      `Support Needed: ${formData.support}`,
+      `Timeline: ${formData.timeline}`,
+      `Budget: ${formData.budget}`,
+      "",
+      "Project Details:",
+      formData.message,
+    ].join("\n");
+
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(
+      "New PPM inquiry"
+    )}&body=${encodeURIComponent(body)}`;
+  };
+
   return (
     <>
       <PageHero
@@ -768,12 +858,139 @@ function ContactPage({ navigate }) {
             <ButtonLink href={`mailto:${email}`} variant="gold">
               <Mail aria-hidden="true" /> Email Elijah
             </ButtonLink>
-            <ButtonLink href="/retainer" navigate={navigate} variant="secondary">
-              View Monthly Retainer
+            <ButtonLink href="/packages" navigate={navigate} variant="secondary">
+              View Packages
             </ButtonLink>
           </>
         }
       />
+      <section className="visual-feature-section contact-visual-section">
+        <div className="content-grid visual-feature-grid">
+          <div className="visual-feature-frame">
+            <img src={contactWorkspaceImage} alt="Workspace for sending marketing project details" />
+          </div>
+          <div className="visual-feature-copy">
+            <p className="section-label">Start Simple</p>
+            <h2>A few details are enough to begin shaping the right plan.</h2>
+            <p>
+              Send the brand, the goal, the timeline, and what kind of support
+              would help most right now. From there, the next step can be clear
+              and easy.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section className="section form-section">
+        <div className="content-grid contact-form-grid">
+          <div className="section-heading">
+            <p className="section-label">Project Form</p>
+            <h2>Tell me what you want help with.</h2>
+            <p>
+              Share the basics and this will open an email draft with everything
+              organized, so it is easy to start the conversation.
+            </p>
+            <div className="direct-contact-card">
+              <a href={`mailto:${email}`}>{email}</a>
+              <a href={`tel:${phone}`}>{phoneDisplay}</a>
+            </div>
+          </div>
+          <form className="contact-form" onSubmit={submitContactForm}>
+            <div className="form-row">
+              <label>
+                Name
+                <input
+                  name="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={updateForm}
+                  placeholder="Your name"
+                  required
+                />
+              </label>
+              <label>
+                Email
+                <input
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={updateForm}
+                  placeholder="you@example.com"
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-row">
+              <label>
+                Phone
+                <input
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={updateForm}
+                  placeholder="Best number to reach you"
+                />
+              </label>
+              <label>
+                Brand / Business
+                <input
+                  name="brand"
+                  type="text"
+                  value={formData.brand}
+                  onChange={updateForm}
+                  placeholder="Business, venue, event, or project"
+                />
+              </label>
+            </div>
+            <div className="form-row">
+              <label>
+                What do you need?
+                <select name="support" value={formData.support} onChange={updateForm}>
+                  <option>Monthly packages</option>
+                  <option>Social media strategy</option>
+                  <option>Event marketing</option>
+                  <option>Brand growth</option>
+                  <option>Partnership support</option>
+                  <option>Not sure yet</option>
+                </select>
+              </label>
+              <label>
+                Timeline
+                <input
+                  name="timeline"
+                  type="text"
+                  value={formData.timeline}
+                  onChange={updateForm}
+                  placeholder="Launch date, event date, or ideal start"
+                />
+              </label>
+            </div>
+            <label>
+              Budget range
+              <select name="budget" value={formData.budget} onChange={updateForm}>
+                <option value="">Select one</option>
+                <option>Under $750</option>
+                <option>$750 - $1,500</option>
+                <option>$1,500 - $2,500</option>
+                <option>$2,500+</option>
+                <option>Not sure yet</option>
+              </select>
+            </label>
+            <label>
+              What are you trying to do?
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={updateForm}
+                placeholder="Tell me about your goal, audience, event, social media, or anything you want help improving."
+                required
+              />
+            </label>
+            <button className="button button-primary" type="submit">
+              Send Project Details <ArrowRight aria-hidden="true" />
+            </button>
+          </form>
+        </div>
+      </section>
       <section className="section contact-section">
         <div className="content-grid contact-grid">
           <MessageSquare aria-hidden="true" className="contact-icon" />
@@ -785,6 +1002,9 @@ function ContactPage({ navigate }) {
           </p>
           <a className="email-link" href={`mailto:${email}`}>
             {email}
+          </a>
+          <a className="email-link phone-link" href={`tel:${phone}`}>
+            {phoneDisplay}
           </a>
         </div>
       </section>
@@ -798,12 +1018,14 @@ function renderPage(path, navigate) {
       return <ServicesPage navigate={navigate} />;
     case "/story":
       return <StoryPage navigate={navigate} />;
+    case "/packages":
+      return <PackagesPage navigate={navigate} />;
     case "/work":
       return <WorkPage navigate={navigate} />;
     case "/contact":
       return <ContactPage navigate={navigate} />;
     case "/retainer":
-      return <RetainerPage navigate={navigate} />;
+      return <PackagesPage navigate={navigate} />;
     case "/start-project":
       return <StartProjectPage navigate={navigate} />;
     default:
