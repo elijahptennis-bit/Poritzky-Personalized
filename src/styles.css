@@ -74,30 +74,37 @@ img {
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
   min-width: 0;
 }
 
 .logo img {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .logo span {
   display: grid;
-  gap: 1px;
+  gap: 2px;
   line-height: 1.05;
 }
 
 .logo strong {
-  font-size: 0.98rem;
+  font-size: 1rem;
   color: var(--forest);
+  font-weight: 900;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .logo small {
   color: rgba(45, 62, 80, 0.62);
-  font-size: 0.76rem;
-  font-weight: 750;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .site-nav {
@@ -989,8 +996,16 @@ img {
   }
 
   .logo img {
-    width: 46px;
-    height: 46px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .logo strong {
+    font-size: 0.88rem;
+  }
+
+  .logo small {
+    font-size: 0.64rem;
   }
 
   .hero {

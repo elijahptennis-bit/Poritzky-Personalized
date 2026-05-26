@@ -20,8 +20,9 @@ import client40FortyLogo from "./assets/client-40forty.png";
 import clientGeauSportLogo from "./assets/client-geau-sport.webp";
 import clientPickleYardLogo from "./assets/client-pickle-yard.png";
 import ppmHeroImage from "./assets/ppm-hero.png";
-import ppmLogo from "./assets/ppm-logo.svg";
-import storyCourtImage from "./assets/story-elijah-court.png";
+import ppmLogo from "./assets/ppm-mark.png";
+import homeAboutImage from "./assets/about-home-court.png";
+import storyAboutImage from "./assets/about-story-tennis.jpg";
 
 const email = "Elijahptennis@gmail.com";
 
@@ -249,8 +250,8 @@ function Logo({ navigate }) {
     >
       <img src={ppmLogo} alt="" />
       <span>
-        <strong>Poritzky</strong>
-        <small>Personalized Marketing</small>
+        <strong>Poritzky Personalized</strong>
+        <small>Marketing</small>
       </span>
     </a>
   );
@@ -339,7 +340,7 @@ function HomePage({ navigate }) {
         <div className="content-grid story-photo-grid">
           <div className="story-photo-frame">
             <img
-              src={storyCourtImage}
+              src={homeAboutImage}
               alt="Elijah working courtside on marketing strategy"
             />
           </div>
@@ -500,8 +501,8 @@ function StoryPage({ navigate }) {
         <div className="content-grid story-photo-grid">
           <div className="story-photo-frame">
             <img
-              src={storyCourtImage}
-              alt="Elijah working courtside on marketing strategy"
+              src={storyAboutImage}
+              alt="Elijah standing on a tennis court with a racquet"
             />
           </div>
           <div className="story-feature-copy">
