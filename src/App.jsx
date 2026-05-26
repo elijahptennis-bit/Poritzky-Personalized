@@ -16,6 +16,12 @@ import {
   Target,
   Trophy,
 } from "lucide-react";
+import client40FortyLogo from "./assets/client-40forty.png";
+import clientGeauSportLogo from "./assets/client-geau-sport.webp";
+import clientPickleYardLogo from "./assets/client-pickle-yard.png";
+import ppmHeroImage from "./assets/ppm-hero.png";
+import ppmLogo from "./assets/ppm-logo.svg";
+import storyCourtImage from "./assets/story-elijah-court.png";
 
 const email = "Elijahptennis@gmail.com";
 
@@ -101,15 +107,61 @@ const capabilities = [
 const clients = [
   {
     name: "40Forty Padel Club",
-    logo: "/assets/client-40forty.png",
+    logo: client40FortyLogo,
   },
   {
     name: "Pickle Yard Mauldin",
-    logo: "/assets/client-pickle-yard.png",
+    logo: clientPickleYardLogo,
   },
   {
     name: "Geau Sport",
-    logo: "/assets/client-geau-sport.webp",
+    logo: clientGeauSportLogo,
+  },
+];
+
+const pricingTiers = [
+  {
+    name: "Starter",
+    price: "$750",
+    cadence: "per month",
+    description: "For brands that need a clean content rhythm and clearer weekly direction.",
+    content: "8 content pieces / month",
+    features: [
+      "4 social posts or graphics",
+      "4 short-form video/reel concepts",
+      "Monthly content calendar",
+      "Caption direction and hashtag guidance",
+      "One 45-minute strategy call",
+    ],
+  },
+  {
+    name: "Growth",
+    price: "$1,500",
+    cadence: "per month",
+    description: "For active brands, venues, and events that need consistent execution and campaign planning.",
+    content: "16 content pieces / month",
+    featured: true,
+    features: [
+      "8 social posts or graphics",
+      "6 short-form video/reel concepts",
+      "2 email, flyer, or event promo assets",
+      "Monthly content calendar and campaign plan",
+      "Two strategy calls plus weekly check-ins",
+    ],
+  },
+  {
+    name: "Premium",
+    price: "$2,500",
+    cadence: "per month",
+    description: "For brands that want deeper support across content, events, partnerships, and growth ideas.",
+    content: "28 content pieces / month",
+    features: [
+      "12 social posts or graphics",
+      "10 short-form video/reel concepts",
+      "4 event, email, or promotional assets",
+      "2 partnership or sponsorship outreach pieces",
+      "Weekly strategy support and priority planning",
+    ],
   },
 ];
 
@@ -195,7 +247,7 @@ function Logo({ navigate }) {
         navigate("/");
       }}
     >
-      <img src="/assets/ppm-logo.svg" alt="" />
+      <img src={ppmLogo} alt="" />
       <span>
         <strong>Poritzky</strong>
         <small>Personalized Marketing</small>
@@ -266,7 +318,7 @@ function HomePage({ navigate }) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.1 }}
           >
-            <img src="/assets/ppm-hero.png" alt="Marketing strategy materials arranged on a desk" />
+            <img src={ppmHeroImage} alt="Marketing strategy materials arranged on a desk" />
             <div className="strategy-panel" aria-label="Strategy, content, and events">
               <p>Strategy / Content / Events</p>
               <h2>A modern marketing partner for growing brands.</h2>
@@ -417,6 +469,28 @@ function StoryPage({ navigate }) {
           </ButtonLink>
         }
       />
+      <section className="story-photo-section">
+        <div className="content-grid story-photo-grid">
+          <div className="story-photo-frame">
+            <img
+              src={storyCourtImage}
+              alt="Elijah working courtside on marketing strategy"
+            />
+          </div>
+          <div className="story-feature-copy">
+            <p className="section-label">Perspective</p>
+            <h2>Marketing moves fast, but people still respond to what feels real.</h2>
+            <p>
+              My background in tennis taught me to read situations quickly:
+              momentum, timing, emotion, pressure, and the small details that
+              change how people respond. I bring that same awareness into
+              marketing. It is not just about posting more. It is about knowing
+              what people are paying attention to and turning that attention
+              into a clear message.
+            </p>
+          </div>
+        </div>
+      </section>
       <section className="section story-band">
         <div className="content-grid story-grid">
           <div>
@@ -436,7 +510,29 @@ function StoryPage({ navigate }) {
               goal is simple: make people care, make it easy to understand, and
               make it feel personal.
             </p>
+            <p>
+              I also pay close attention to growing trends: what formats people
+              are watching, how local communities discover events, what makes a
+              venue feel shareable, and how brands can show personality without
+              losing professionalism. The best marketing is current without
+              feeling random. It should fit the brand, the audience, and the
+              moment.
+            </p>
           </div>
+        </div>
+      </section>
+      <section className="section trend-section">
+        <div className="content-grid trend-grid">
+          {[
+            ["Trend awareness", "Short-form video, social search, community events, and creator-style content all shape how people discover brands now."],
+            ["Audience translation", "I help turn what a business does into language and content that the right people actually understand."],
+            ["Local momentum", "For venues and events, the goal is to make the experience easy to picture, easy to share, and easy to say yes to."],
+          ].map(([title, text]) => (
+            <article className="service-card trend-card" key={title}>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
         </div>
       </section>
       <section className="section compact-section">
@@ -546,6 +642,47 @@ function RetainerPage({ navigate }) {
               Start With a Project
             </ButtonLink>
           </article>
+        </div>
+      </section>
+      <section className="section pricing-section">
+        <div className="content-grid">
+          <div className="section-heading split-heading">
+            <div>
+              <p className="section-label">Content Tiers</p>
+              <h2>Monthly packages with clear deliverables.</h2>
+            </div>
+            <p>
+              These are starting points. Each package can be adjusted around
+              the brand, event calendar, and how much content you already have.
+            </p>
+          </div>
+          <div className="pricing-grid">
+            {pricingTiers.map((tier) => (
+              <article
+                className={`pricing-card ${tier.featured ? "pricing-card-featured" : ""}`}
+                key={tier.name}
+              >
+                <div>
+                  <p className="section-label">{tier.name}</p>
+                  <h3>{tier.price}</h3>
+                  <p className="price-cadence">{tier.cadence}</p>
+                  <p className="tier-description">{tier.description}</p>
+                </div>
+                <div className="content-count">{tier.content}</div>
+                <ul>
+                  {tier.features.map((feature) => (
+                    <li key={feature}>
+                      <CheckCircle2 aria-hidden="true" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <ButtonLink href="/contact" navigate={navigate} variant={tier.featured ? "gold" : "secondary"}>
+                  Ask About {tier.name}
+                </ButtonLink>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
     </>
