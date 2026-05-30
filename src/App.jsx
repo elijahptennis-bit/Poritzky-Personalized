@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   BarChart3,
@@ -7,7 +7,6 @@ import {
   Camera,
   CheckCircle2,
   ChevronRight,
-  ClipboardList,
   Globe2,
   Handshake,
   Mail,
@@ -23,8 +22,15 @@ import ppmHeroImage from "./assets/ppm-hero.png";
 import ppmLogo from "./assets/ppm-mark.png";
 import homeAboutImage from "./assets/about-home-court.png";
 import storyAboutImage from "./assets/about-story-tennis.jpg";
+import contactHeroTennisImage from "./assets/contact-hero-tennis.jpg";
 import contactWorkspaceImage from "./assets/contact-workspace.png";
+import packagesHeroImage from "./assets/packages-hero.png";
 import packagesPlanningImage from "./assets/packages-planning.png";
+import servicesDetailImage from "./assets/services-detail.png";
+import servicesHeroImage from "./assets/services-hero.png";
+import startProjectHeroImage from "./assets/start-project-hero.png";
+import storyPerspectiveImage from "./assets/story-perspective.png";
+import workHeroImage from "./assets/work-hero.png";
 import workEventCourtImage from "./assets/work-event-court.png";
 
 const email = "Elijahptennis@gmail.com";
@@ -214,6 +220,66 @@ function useRoute() {
   return { path, navigate };
 }
 
+const itemReveal = {
+  hidden: { opacity: 0, y: 22 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const staggerReveal = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+function Reveal({ children, className = "", delay = 0 }) {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <motion.div
+      className={className}
+      initial={reduceMotion ? false : "hidden"}
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.22 }}
+      variants={itemReveal}
+      transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1], delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function StaggerGroup({ children, className = "", ariaLabel }) {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <motion.div
+      className={className}
+      aria-label={ariaLabel}
+      initial={reduceMotion ? false : "hidden"}
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.16 }}
+      variants={staggerReveal}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function StaggerItem({ children, className = "" }) {
+  return (
+    <motion.article
+      className={className}
+      variants={itemReveal}
+      transition={{ duration: 0.54, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.article>
+  );
+}
+
 function ButtonLink({ href, children, variant = "primary", className = "", navigate }) {
   const isInternal = href?.startsWith("/");
 
@@ -345,7 +411,7 @@ function HomePage({ navigate }) {
       </section>
 
       <section className="home-about-section">
-        <div className="content-grid story-photo-grid">
+        <Reveal className="content-grid story-photo-grid">
           <div className="story-photo-frame">
             <img
               src={homeAboutImage}
@@ -368,27 +434,27 @@ function HomePage({ navigate }) {
               </ButtonLink>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <section className="clients-section">
         <div className="content-grid clients-wrap">
-          <div className="clients-heading">
+          <Reveal className="clients-heading">
             <p className="section-label">Clients & Collaborations</p>
             <h2>Trusted by sports, lifestyle, and community-driven brands.</h2>
-          </div>
-          <div className="client-logo-grid" aria-label="Client logos">
+          </Reveal>
+          <StaggerGroup className="client-logo-grid" ariaLabel="Client logos">
             {clients.map((client) => (
-              <article className="client-logo-card" key={client.name}>
+              <StaggerItem className="client-logo-card" key={client.name}>
                 <img src={client.logo} alt={client.name} />
-              </article>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
       <section className="section landing-links-section">
-        <div className="content-grid preview-grid">
+        <StaggerGroup className="content-grid preview-grid">
           <PagePreview
             label="Services"
             title="Marketing support that meets you where you are."
@@ -410,7 +476,7 @@ function HomePage({ navigate }) {
             href="/contact"
             navigate={navigate}
           />
-        </div>
+        </StaggerGroup>
       </section>
     </>
   );
@@ -418,30 +484,35 @@ function HomePage({ navigate }) {
 
 function PagePreview({ label, title, text, href, navigate }) {
   return (
-    <article className="service-card page-preview">
+    <StaggerItem className="service-card page-preview">
       <p className="section-label">{label}</p>
       <h3>{title}</h3>
       <p>{text}</p>
       <ButtonLink href={href} navigate={navigate} variant="secondary">
         Learn More <ChevronRight aria-hidden="true" />
       </ButtonLink>
-    </article>
+    </StaggerItem>
   );
 }
 
-function PageHero({ label, title, text, actions }) {
+function PageHero({ label, title, text, actions, image, imageAlt }) {
   return (
     <section className="page-hero">
-      <div className="content-grid page-hero-grid">
+      <Reveal className="content-grid page-hero-grid">
         <div>
           <p className="section-label">{label}</p>
           <h1>{title}</h1>
         </div>
         <div>
+          {image ? (
+            <div className="page-hero-media">
+              <img src={image} alt={imageAlt} />
+            </div>
+          ) : null}
           <p>{text}</p>
           {actions ? <div className="hero-actions">{actions}</div> : null}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -453,6 +524,8 @@ function ServicesPage({ navigate }) {
         label="Services"
         title="Choose the kind of marketing help your brand needs now."
         text="Each service is built to give your brand clearer direction, better content, and more consistent execution."
+        image={servicesHeroImage}
+        imageAlt="Marketing services planning board with content tools"
         actions={
           <>
             <ButtonLink href="/start-project" navigate={navigate}>
@@ -465,9 +538,9 @@ function ServicesPage({ navigate }) {
         }
       />
       <section className="visual-feature-section">
-        <div className="content-grid visual-feature-grid">
+        <Reveal className="content-grid visual-feature-grid">
           <div className="visual-feature-frame">
-            <img src={ppmHeroImage} alt="Marketing planning materials for social content and campaigns" />
+            <img src={servicesDetailImage} alt="Service strategy cards and campaign planning materials" />
           </div>
           <div className="visual-feature-copy">
             <p className="section-label">How It Looks</p>
@@ -478,14 +551,14 @@ function ServicesPage({ navigate }) {
               feel connected to the brand.
             </p>
           </div>
-        </div>
+        </Reveal>
       </section>
       <section className="section">
-        <div className="content-grid service-detail-grid">
+        <StaggerGroup className="content-grid service-detail-grid">
           {services.map((service) => {
             const Icon = service.icon;
             return (
-              <article className="detail-card" key={service.title}>
+              <StaggerItem className="detail-card" key={service.title}>
                 <div className="icon-box">
                   <Icon aria-hidden="true" />
                 </div>
@@ -499,10 +572,10 @@ function ServicesPage({ navigate }) {
                     </li>
                   ))}
                 </ul>
-              </article>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerGroup>
       </section>
     </>
   );
@@ -515,6 +588,8 @@ function StoryPage({ navigate }) {
         label="My Story"
         title="Built from sport, travel, communication, and real brand experience."
         text="PPM brings an athlete's discipline, a global perspective, and practical event experience into marketing strategy."
+        image={storyAboutImage}
+        imageAlt="Elijah standing on a tennis court with a racquet"
         actions={
           <ButtonLink href="/work" navigate={navigate} variant="secondary">
             See Experience
@@ -522,11 +597,11 @@ function StoryPage({ navigate }) {
         }
       />
       <section className="story-photo-section">
-        <div className="content-grid story-photo-grid">
+        <Reveal className="content-grid story-photo-grid">
           <div className="story-photo-frame">
             <img
-              src={storyAboutImage}
-              alt="Elijah standing on a tennis court with a racquet"
+              src={storyPerspectiveImage}
+              alt="Story and trend strategy workspace with tennis and travel details"
             />
           </div>
           <div className="story-feature-copy">
@@ -541,10 +616,10 @@ function StoryPage({ navigate }) {
               into a clear message.
             </p>
           </div>
-        </div>
+        </Reveal>
       </section>
       <section className="section story-band">
-        <div className="content-grid story-grid">
+        <Reveal className="content-grid story-grid">
           <div>
             <p className="section-label">Background</p>
             <h2>High-performance environments shaped the way PPM thinks about people.</h2>
@@ -571,37 +646,37 @@ function StoryPage({ navigate }) {
               moment.
             </p>
           </div>
-        </div>
+        </Reveal>
       </section>
       <section className="section trend-section">
-        <div className="content-grid trend-grid">
+        <StaggerGroup className="content-grid trend-grid">
           {[
             ["Trend awareness", "Short-form video, social search, community events, and creator-style content all shape how people discover brands now."],
             ["Audience translation", "I help turn what a business does into language and content that the right people actually understand."],
             ["Local momentum", "For venues and events, the goal is to make the experience easy to picture, easy to share, and easy to say yes to."],
           ].map(([title, text]) => (
-            <article className="service-card trend-card" key={title}>
+            <StaggerItem className="service-card trend-card" key={title}>
               <h3>{title}</h3>
               <p>{text}</p>
-            </article>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </section>
       <section className="section compact-section">
-        <div className="content-grid differentiator-grid">
+        <StaggerGroup className="content-grid differentiator-grid">
           {differentiators.map((item) => {
             const Icon = item.icon;
             return (
-              <article className="service-card" key={item.title}>
+              <StaggerItem className="service-card" key={item.title}>
                 <div className="icon-box accent">
                   <Icon aria-hidden="true" />
                 </div>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
-              </article>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerGroup>
       </section>
     </>
   );
@@ -614,6 +689,8 @@ function WorkPage({ navigate }) {
         label="Work"
         title="Strategy that connects ideas, events, content, and customers."
         text="PPM is designed for businesses that need more than ideas. You need someone who understands the audience, the event, and the actual customer experience."
+        image={workHeroImage}
+        imageAlt="Sports venue walkway with campaign tools and content equipment"
         actions={
           <ButtonLink href="/contact" navigate={navigate}>
             Talk About Your Brand <ArrowRight aria-hidden="true" />
@@ -621,7 +698,7 @@ function WorkPage({ navigate }) {
         }
       />
       <section className="section">
-        <div className="content-grid work-grid">
+        <Reveal className="content-grid work-grid">
           <div className="section-heading">
             <p className="section-label">Experience</p>
             <h2>Where strategy meets real execution.</h2>
@@ -634,38 +711,46 @@ function WorkPage({ navigate }) {
           <div className="work-photo-frame">
             <img src={workEventCourtImage} alt="Marketing materials and content tools at a sports venue" />
           </div>
-        </div>
+        </Reveal>
       </section>
       <section className="section compact-section">
-        <div className="content-grid work-grid">
+        <Reveal className="content-grid work-grid">
           <div className="section-heading">
             <p className="section-label">Proof</p>
             <h2>Real work across sports, events, and local brands.</h2>
           </div>
-          <div className="proof-list">
+          <StaggerGroup className="proof-list">
             {proof.map((item, index) => (
-              <article key={item} className="proof-item">
+              <StaggerItem key={item} className="proof-item">
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <p>{item}</p>
-              </article>
+              </StaggerItem>
             ))}
-          </div>
-        </div>
+          </StaggerGroup>
+        </Reveal>
       </section>
     </>
   );
 }
 
 function PackagesPage({ navigate }) {
-  const items = [
-    "Monthly content calendar with weekly posting priorities",
-    "Reel, story, and short-form video concepts built around current trends",
-    "Captions, hooks, hashtags, and social search language",
-    "Event promotion plans, launch timelines, and day-of content direction",
-    "Brand messaging, offer positioning, and visual direction",
-    "Partnership, sponsorship, and community collaboration ideas",
-    "Monthly performance review with practical next-step recommendations",
-    "Strategy calls and check-ins based on the package level",
+  const packageIncludes = [
+    {
+      title: "Content Planning",
+      text: "Monthly calendars, weekly posting priorities, caption direction, hooks, hashtags, and social search language.",
+    },
+    {
+      title: "Creative Direction",
+      text: "Reel ideas, story prompts, graphic concepts, visual direction, and content themes that match the brand.",
+    },
+    {
+      title: "Campaign Support",
+      text: "Event promotion plans, launch timelines, email or flyer copy, and day-of content direction.",
+    },
+    {
+      title: "Growth Strategy",
+      text: "Brand messaging, offer positioning, partnership ideas, performance reviews, and practical next steps.",
+    },
   ];
 
   return (
@@ -674,6 +759,8 @@ function PackagesPage({ navigate }) {
         label="Packages"
         title="Consistent marketing support without building a full in-house team."
         text="Packages are for brands that want steady direction, cleaner execution, and a marketing partner who stays close to the business."
+        image={packagesHeroImage}
+        imageAlt="Monthly marketing packages planning workspace with content calendar and camera"
         actions={
           <ButtonLink href="/contact" navigate={navigate}>
             Ask About Packages <ArrowRight aria-hidden="true" />
@@ -681,7 +768,7 @@ function PackagesPage({ navigate }) {
         }
       />
       <section className="visual-feature-section">
-        <div className="content-grid visual-feature-grid reverse">
+        <Reveal className="content-grid visual-feature-grid reverse">
           <div className="visual-feature-frame">
             <img src={packagesPlanningImage} alt="Organized monthly marketing package planning materials" />
           </div>
@@ -694,25 +781,29 @@ function PackagesPage({ navigate }) {
               help the brand keep moving.
             </p>
           </div>
-        </div>
+        </Reveal>
       </section>
       <section className="section">
-        <div className="content-grid retainer-grid">
-          <article className="detail-card featured-card">
-            <div className="icon-box">
-              <ClipboardList aria-hidden="true" />
-            </div>
-            <h2>What it can include</h2>
-            <ul>
-              {items.map((item) => (
-                <li key={item}>
-                  <CheckCircle2 aria-hidden="true" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </article>
-          <article className="detail-card">
+        <Reveal className="content-grid package-includes-layout">
+          <div className="section-heading">
+            <p className="section-label">What It Can Include</p>
+            <h2>Clear deliverables without making your marketing feel generic.</h2>
+            <p>
+              Each package can be shaped around the month ahead, whether the
+              priority is better content, a specific event, a launch, or a
+              stronger brand voice.
+            </p>
+          </div>
+          <StaggerGroup className="package-include-grid">
+            {packageIncludes.map((item) => (
+              <StaggerItem className="package-include-card" key={item.title}>
+                <CheckCircle2 aria-hidden="true" />
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </StaggerItem>
+            ))}
+          </StaggerGroup>
+          <StaggerItem className="detail-card">
             <p className="section-label">Best Fit</p>
             <h2>Sports venues, hospitality brands, events, and local businesses.</h2>
             <p>
@@ -723,12 +814,12 @@ function PackagesPage({ navigate }) {
             <ButtonLink href="/start-project" navigate={navigate} variant="secondary">
               Start With a Project
             </ButtonLink>
-          </article>
-        </div>
+          </StaggerItem>
+        </Reveal>
       </section>
       <section className="section pricing-section">
         <div className="content-grid">
-          <div className="section-heading split-heading">
+          <Reveal className="section-heading split-heading">
             <div>
               <p className="section-label">Content Tiers</p>
               <h2>Monthly packages with clear deliverables.</h2>
@@ -737,10 +828,10 @@ function PackagesPage({ navigate }) {
               These are starting points. Each package can be adjusted around
               the brand, event calendar, and how much content you already have.
             </p>
-          </div>
-          <div className="pricing-grid">
+          </Reveal>
+          <StaggerGroup className="pricing-grid">
             {pricingTiers.map((tier) => (
-              <article
+              <StaggerItem
                 className={`pricing-card ${tier.featured ? "pricing-card-featured" : ""}`}
                 key={tier.name}
               >
@@ -762,9 +853,9 @@ function PackagesPage({ navigate }) {
                 <ButtonLink href="/contact" navigate={navigate} variant={tier.featured ? "gold" : "secondary"}>
                   Ask About {tier.name}
                 </ButtonLink>
-              </article>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
     </>
@@ -778,6 +869,8 @@ function StartProjectPage({ navigate }) {
         label="Start a Project"
         title="Tell me what you are building, launching, or trying to grow."
         text="This page helps you decide what to send first so the conversation starts with useful context."
+        image={startProjectHeroImage}
+        imageAlt="Project brief workspace for organizing marketing goals"
         actions={
           <>
             <ButtonLink href={`mailto:${email}?subject=New%20marketing%20project`} variant="gold">
@@ -790,21 +883,21 @@ function StartProjectPage({ navigate }) {
         }
       />
       <section className="section">
-        <div className="content-grid step-grid">
+        <StaggerGroup className="content-grid step-grid">
           {[
             ["01", "What is the brand?", "Share the business, venue, event, or offer you want to grow."],
             ["02", "What needs to happen?", "Send the goal, timeline, audience, and what is currently getting in the way."],
             ["03", "What support sounds right?", "Mention if you need content, event promotion, brand direction, partnerships, or ongoing help."],
           ].map(([number, title, text]) => (
-            <article className="proof-item project-step" key={number}>
+            <StaggerItem className="proof-item project-step" key={number}>
               <span>{number}</span>
               <div>
                 <h2>{title}</h2>
                 <p>{text}</p>
               </div>
-            </article>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </section>
     </>
   );
@@ -853,6 +946,8 @@ function ContactPage({ navigate }) {
         label="Contact"
         title="Ready to make your marketing feel more personal?"
         text="Whether you need a monthly marketing partner, help promoting an event, or a clearer brand direction, PPM can help bring the next step to life."
+        image={contactHeroTennisImage}
+        imageAlt="Elijah seated on a tennis court tossing a tennis ball"
         actions={
           <>
             <ButtonLink href={`mailto:${email}`} variant="gold">
@@ -865,7 +960,7 @@ function ContactPage({ navigate }) {
         }
       />
       <section className="visual-feature-section contact-visual-section">
-        <div className="content-grid visual-feature-grid">
+        <Reveal className="content-grid visual-feature-grid">
           <div className="visual-feature-frame">
             <img src={contactWorkspaceImage} alt="Workspace for sending marketing project details" />
           </div>
@@ -878,10 +973,10 @@ function ContactPage({ navigate }) {
               and easy.
             </p>
           </div>
-        </div>
+        </Reveal>
       </section>
       <section className="section form-section">
-        <div className="content-grid contact-form-grid">
+        <Reveal className="content-grid contact-form-grid">
           <div className="section-heading">
             <p className="section-label">Project Form</p>
             <h2>Tell me what you want help with.</h2>
@@ -989,10 +1084,10 @@ function ContactPage({ navigate }) {
               Send Project Details <ArrowRight aria-hidden="true" />
             </button>
           </form>
-        </div>
+        </Reveal>
       </section>
       <section className="section contact-section">
-        <div className="content-grid contact-grid">
+        <Reveal className="content-grid contact-grid">
           <MessageSquare aria-hidden="true" className="contact-icon" />
           <p className="section-label">Best first message</p>
           <h2>Send the brand, goal, timeline, and the kind of help you need.</h2>
@@ -1006,7 +1101,7 @@ function ContactPage({ navigate }) {
           <a className="email-link phone-link" href={`tel:${phone}`}>
             {phoneDisplay}
           </a>
-        </div>
+        </Reveal>
       </section>
     </>
   );
